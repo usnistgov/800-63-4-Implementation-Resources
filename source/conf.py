@@ -5,44 +5,74 @@
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
+import os
+import sys
 
-project = 'rtd_template'
-copyright = '2025, Drew Keller'
-author = 'Drew Keller'
-release = '0.1'
+sys.path.append(os.path.abspath("_themes"))
+
+project = 'NCCoE Template'
+author = 'NIST NCCoE'
+email = u'nccoe@nist.gov'
+googleanalytics_id = 'G-RJSMY46M5C'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = [
-    'sphinx_rtd_theme',
+    'sphinxcontrib.rsvgconverter',
+    'sphinx.ext.intersphinx',
+    'sphinx.ext.autodoc',
+    'sphinx.ext.autosummary',
+    'sphinx_design',
+    'sphinx.ext.mathjax',
+    'sphinx.ext.viewcode',
+    'nccoe_rtd_theme',
+    "sphinxcontrib.mermaid",
+    "sphinx_datatables",
+    "sphinxcontrib.googleanalytics",
 ]
 
 templates_path = ['_templates']
+source_suffix = '.rst'
+gettext_compact = False
 exclude_patterns = ['build', 'Thumbs.db', '.DS_Store', '.git']
+
+master_doc = 'index'
+suppress_warnings = ['image.nonlocal_uri']
+pygments_style = 'default'
+
 
 
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-html_theme = "sphinx_rtd_theme"
+html_theme = "nccoe_rtd_theme"
+html_theme_path = [os.path.abspath("_themes")]
 html_static_path = ['_static']
 html_theme_options = {
-    'analytics_id': 'G-RJSMY46M5C',
-    'analytics_anonymize_ip': True,
     'logo_only': False,
     'prev_next_buttons_location': 'bottom',
     'style_external_links': True,
     'vcs_pageview_mode': '',
     'style_nav_header_background': 'white',
     'flyout_display': 'hidden',
-    'version_selector': True,
-    'language_selector': True,
+    'version_selector': False,
+    'language_selector': False,
     # Toc options
     'collapse_navigation': True,
     'sticky_navigation': True,
     'navigation_depth': 4,
     'includehidden': True,
-    'titles_only': False
+    'titles_only': False,
+    'project_page': 'https://nccoe.nist.gov/projects'
 }
+html_css_files = [
+    "custom.css"
+]
+
+html_js_files = [
+    "main.js"
+]
+
+numfig = True

@@ -1,0 +1,85 @@
+name: Build and Deploy Documentation and Vue App
+
+on:
+  push:
+    branches:
+      - "**"
+    tags:
+      - "*.*.*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Python 3.12
+        uses: actions/setup-python@v5.1.0
+        with:
+          python-version: "3.12"
+
+      - name: Upgrade pip
+        run: python3 -m pip install --upgrade pip
+
+      # Cache Python dependencies
+      - name: Get pip cache dir
+        id: pip-cache
+        run: echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache Python dependencies
+        uses: actions/cache@v4.2.2
+        with:
+          path: ${{ steps.pip-cache.outputs.dir }}
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/pyproject.toml', '**/tox.ini') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install Sphinx dependencies
+        run: python3 -m pip install -r requirements.txt
+
+      - name: Build Sphinx site
+        run: make html
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      - name: Cache Node.js dependencies
+        uses: actions/cache@v4.2.2
+        with:
+          path: source/nccoe-bank/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('source/nccoe-bank/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install Vue dependencies
+        run: |
+          cd source/nccoe-bank
+          npm install
+
+      # Build Vue app
+      - name: Build Vue app
+        run: |
+          cd source/nccoe-bank
+          npm run build
+          mkdir -p ../../public/nccoe-bank
+          cp -r dist/* ../../public/nccoe-bank/
+
+      # Archive the combined site
+      - name: Archive the site
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-build
+          path: public
+
+      # Deploy the site to GitHub Pages
+      - name: Deploy site to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        if: ${{ github.ref == 'refs/heads/main' }}
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: public
+          publish_branch: nist-pages
+          user_name: "github-actions[bot]"
+          user_email: "github-actions[bot]@users.noreply.github.com"
+          commit_message: ${{ github.event.head_commit.message }}

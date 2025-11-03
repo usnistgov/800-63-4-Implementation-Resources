@@ -1,14 +1,27 @@
-.. rtd_template documentation master file, created by
-   sphinx-quickstart on Wed Aug  6 15:59:41 2025.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
-rtd_template documentation
+NCCoE Template Documentation
 ==========================
 
 Add your content using ``reStructuredText`` syntax. See the
 `reStructuredText <https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>`_
 documentation for details.
+
+Documentation for building Sphinx sites at the NCCoE is available from: https://nccoe-rtd-theme-93f2d7.pages.mitre.org
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 .. toctree::
