@@ -27,7 +27,6 @@ $(document).ready(function () {
     searching: true,
     responsive: true,
     autoWidth: false,
-    columns: [{ width: '5%' }, { width: '55%' }, { width: '40%' }]
   });
 
 

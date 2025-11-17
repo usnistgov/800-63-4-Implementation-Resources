@@ -44,6 +44,8 @@
     <link rel="stylesheet" href="{{ pathto(css_file, 1)|escape }}" type="text/css" />
   {%- endfor -%}
 
+    <link rel="stylesheet" href="{{ pathto('_static/css/datatables.min.css', 1) }}">
+
   {#- FAVICON #}
   {%- if favicon_url %}
     <link rel="shortcut icon" href="{{ favicon_url }}"/>
@@ -74,6 +76,7 @@
         mermaid.initialize({startOnLoad: true,securityLevel: 'loose'});
       });
     </script>
+    <script src="{{ pathto('_static/js/datatables.min.js', 1) }}"></script>
     <script src="{{ pathto('_static/js/main.js', 1) }}"></script>
     <link rel="stylesheet" href="{{ pathto('_static/css/leaveNotice.css', 1) }}">
     <script src="{{ pathto('_static/js/jquery.leaveNotice-nist.js', 1) }}"></script>
@@ -163,7 +166,7 @@
           {# the logo helper function was removed in Sphinx 6 and deprecated since Sphinx 4 #}
           {# the master_doc variable was renamed to root_doc in Sphinx 4 (master_doc still exists in later Sphinx versions) #}
           {%- set _root_doc = root_doc|default(master_doc) %}
-          <a class="nccoe-logo" href="https://www.nccoe.nist.gov" aria-label="The National Cybersecurity Center of Excellence (NCCoE)">
+          <a class="nccoe-logo" href="https://www.nccoe.nist.gov" aria-label="NIST | National Cybersecurity Center of Excellence (NCCoE)">
             <!--?xml version="1.0" encoding="UTF-8" standalone="no"?-->
             <svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#"
               xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg"
@@ -174,27 +177,27 @@
                 .nccoe-logo-svg .st0 {
                   fill: #4F8BBE;
                 }
-          
+
                 .nccoe-logo-svg .st1 {
                   fill: none;
                 }
-          
+
                 .nccoe-logo-svg .st2 {
                   fill: #818286;
                 }
-          
+
                 .nccoe-logo-svg .st3 {
                   fill: #D3AF73;
                 }
-          
+
                 .nccoe-logo-svg .st4 {
                   fill: #E89824;
                 }
-          
+
                 .nccoe-logo-svg .st5 {
                   fill: #10659C;
                 }
-          
+
                 .nccoe-logo-svg .st6 {
                   fill: none;
                   stroke: #000000;
@@ -319,7 +322,7 @@
                 <path class="st5" d="M309,49.3l5.3,0l0,0.8l-4.4,0l0,2.4l4,0l0,0.8l-4,0l0,2.6l4.5,0l0,0.9l-5.4,0L309,49.3z"></path>
               </g>
               <polyline class="st6" points="143.9,24.8 143.9,40 148.6,42.7 143.9,45.5 143.9,61.2 "></polyline>
-          
+
             </svg>
           </a>
           <a class="project-title" href="{{ pathto(_root_doc) }}">
@@ -349,7 +352,7 @@
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="{{ _('Navigation menu') }}">
           {%- block menu %}
             {%- set toctree = toctree(maxdepth=theme_navigation_depth|int,
-                                      collapse=theme_collapse_navigation|tobool,
+                                      collapse=false,
                                       includehidden=theme_includehidden|tobool,
                                       titles_only=theme_titles_only|tobool) %}
             {%- if toctree %}
@@ -405,6 +408,9 @@
   {% include "versions.html" -%}
 
   <script>
+      // expose collapse_navigation theme option to runtime JS so theme scripts can
+      // decide whether to expand first-level toctree entries automatically.
+      window.themeCollapseNavigation = {{ 'true' if theme_collapse_navigation|tobool else 'false' }};
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable({{ 'true' if theme_sticky_navigation|tobool else 'false' }});
       });
