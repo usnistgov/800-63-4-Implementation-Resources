@@ -44,8 +44,9 @@ pygments_style = 'default'
 
 
 
-# -- Options for HTML output -------------------------------------------------
-# https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
+html_logo = "_static/img/nccoe-logo.svg"
+html_show_sourcelink = False
+html_favicon = "_static/img/favicon.ico"
 
 html_theme = "nccoe_rtd_theme"
 html_theme_path = [os.path.abspath("_themes")]
