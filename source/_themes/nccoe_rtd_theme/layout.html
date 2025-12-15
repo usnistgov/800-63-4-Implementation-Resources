@@ -166,7 +166,7 @@
           {# the logo helper function was removed in Sphinx 6 and deprecated since Sphinx 4 #}
           {# the master_doc variable was renamed to root_doc in Sphinx 4 (master_doc still exists in later Sphinx versions) #}
           {%- set _root_doc = root_doc|default(master_doc) %}
-          <a class="nccoe-logo" href="https://www.nccoe.nist.gov" aria-label="NIST | National Cybersecurity Center of Excellence (NCCoE)">
+          <a class="nccoe-logo"  href="{{ pathto(_root_doc) }}" aria-label="NIST | National Cybersecurity Center of Excellence (NCCoE)">
             <!--?xml version="1.0" encoding="UTF-8" standalone="no"?-->
             <svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#"
               xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg"
@@ -338,11 +338,12 @@
             {%- endif %}
           {%- endif %}
 
+          <a class="project-page-link" href="{{ theme_project_page }}">
+            Go to Project Page
+          </a>
           {%- include "searchbox.html" %}
 
-          <a class="project-page-link" href="{{ theme_project_page }}">
-            View Project Page
-          </a>
+
 
           {%- endblock %}
         </div>
