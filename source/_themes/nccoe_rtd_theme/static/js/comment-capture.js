@@ -67,6 +67,51 @@
     };
   }
 
+  function csvCell(value) {
+    if (value == null) return '';
+    let valueStr = String(value);
+    valueStr = valueStr.replace(/"/g, '""');
+    return '"' + valueStr + '"';
+  }
+
+  function buildCsvFromQueue() {
+    var headers = ['url', 'text', 'comment'];
+    var q = qLoad();
+    var lines = [];
+
+    lines.push(headers.join(','));
+
+    q.forEach(function (item) {
+      var url = item.url || '';
+      var quote = (item.text_quote || '').replace(/\r?\n/g, ' ');
+      var comment = (item.comment || '').replace(/\r?\n/g, ' ');
+
+      lines.push([url, quote, comment].map(csvCell).join(','));
+    })
+    return lines.join('\n');
+  }
+
+  function downloadCsvFromQueue() {
+    var csvContent = buildCsvFromQueue();
+    if (csvContent === '') {
+      return;
+    }
+    var blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = SUBJECT
+      .replace(/\{PROJECT\}/g, PROJECT.replace(/\s+/g, '_'))
+      .replace(/\{N\}/g, String(qLoad().length))
+      .replace(/[^a-z0-9_\-\.]/gi, '_') + '.csv';
+    document.body.appendChild(a);
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  window.downloadCsvFromQueue = downloadCsvFromQueue;
+  window.buildCsvFromQueue = buildCsvFromQueue;
+
   // ---- email composer ----
   function buildEmailPieces(q) {
     var by = {}; q.forEach(function (it) { (by[it.url] = by[it.url] || { t: it.page_title, items: [] }).items.push(it); });
@@ -123,10 +168,11 @@
       '<div class="cm-ep-f"><label for="cm-ep-list">Queued comments</label><div id="cm-ep-list"></div></div>' +
       '<div class="cm-ep-f"><label for="cm-ep-body">Body</label><textarea id="cm-ep-body" class="cm-ep-ta"></textarea></div>' +
       '<div class="cm-ep-ft">' +
+      '<button type="button" class="cm-ep-b ghost" id="cm-ep-cancel">Cancel</button>' +
       '<button type="button" class="cm-ep-b danger" id="cm-ep-clear">Clear all</button>' +
       '<button type="button" class="cm-ep-b sec" id="cm-ep-copy">Copy</button>' +
       '<button type="button" class="cm-ep-b" id="cm-ep-open">Open in email app</button>' +
-      '<button type="button" class="cm-ep-b ghost" id="cm-ep-cancel">Cancel</button>' +
+      '<button type="button" class="cm-ep-b export" id="cm-ep-export">Export comments</button>' +
       '</div>' +
       '</div>';
     document.body.appendChild(wrap);
@@ -149,6 +195,11 @@
       var $op = document.getElementById('cm-ep-open');
       var $cl = document.getElementById('cm-ep-clear');
       var $list = document.getElementById('cm-ep-list');
+      var $ex = document.getElementById('cm-ep-export');
+
+      $ex.onclick = function () {
+        downloadCsvFromQueue();
+      };
 
       function escapeHtml(s) {
         return String(s || '')
@@ -428,34 +479,6 @@
     place(); // re-measure/reposition after label change
   }
   updateBtn();
-
-  (function initLeavePrompt() {
-    var JUST_SENT_KEY = 'cm_just_sent';
-
-    window.addEventListener('beforeunload', function (e) {
-      var justSent = sessionStorage.getItem(JUST_SENT_KEY) === '1';
-
-      if (justSent) {
-        sessionStorage.removeItem(JUST_SENT_KEY);
-        return;
-      }
-
-      if (qLoad().length > 0) {
-        e.preventDefault();
-        e.returnValue = '';
-      }
-    });
-
-    var oldOpen = window.openEmailPreview;
-    window.openEmailPreview = function (opts) {
-      var wrappedOnSend = function () {
-        try { sessionStorage.setItem(JUST_SENT_KEY, '1'); } catch (e) { }
-        opts && typeof opts.onSend === 'function' && opts.onSend();
-      };
-      var patched = Object.assign({}, opts, { onSend: wrappedOnSend });
-      oldOpen.call(this, patched);
-    };
-  })();
 
   // keep annotator UI above headers
   var styleTag = document.createElement('style');
