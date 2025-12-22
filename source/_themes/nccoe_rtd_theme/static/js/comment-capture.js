@@ -315,20 +315,24 @@
     wrap.innerHTML =
       '<div class="cm-instr-dialog" role="dialog" aria-modal="true" aria-labelledby="cm-instr-title">' +
       '<div class="cm-instr-h">' +
-      '<h3 id="cm-instr-title" class="cm-ep-title">How to comment</h3>' +
+      '<h3 id="cm-instr-title" class="cm-ep-title">How to comment & send feedback</h3>' +
       '<button type="button" class="cm-instr-x" aria-label="Close">×</button>' +
       '</div>' +
       '<div class="cm-instr-body">' +
       '<ol>' +
       '<li>Select any text on the page.</li>' +
-      '<li>Click “Annotate” and type your comment.</li>' +
-      '<li>Click “Add to Queue” to stage it.</li>' +
-      '<li>Use “Review &amp; Send” to email all queued comments.</li>' +
+      '<li>Click "Annotate", then type your comment.</li>' +
+      '<li>Click "Save" to stage it.</li>' +
+      '<li>Repeat across as many pages as you want, everything stays in your queue.</li>' +
+      '<li>When you’re ready, click "Send n comments" to review, remove items, export a CSV, copy the email, or open your email app.</li>' +
       '</ol>' +
-      '<div class="cm-instr-note">Tips: Each comment captures the page title, a nearby anchor, and a text quote. You can send multiple pages’ comments in one email.</div>' +
+      '<div class="cm-instr-note">' +
+      'Tips: Your queued comments are saved in this browser until you send or clear them. ' +
+      'Each entry includes the page title, URL, a nearby section anchor (when available), and a quote to help reviewers find the exact spot.' +
+      '</div>' +
       '<div>' +
       '<div class="cm-instr-subtitle">Quick demo</div>' +
-      '<div class="cm-instr-gifbox"><span>(Optional) Drop a GIF here</span></div>' +
+      '<div class="cm-instr-media-box"><span>video error</span></div>' +
       '</div>' +
       '</div>' +
       '<div class="cm-instr-ft">' +
@@ -345,10 +349,14 @@
 
     window.openInstructionsModal = function (opts) {
       opts = opts || {};
-      // If you have a GIF URL, set it here:
-      if (opts.gif) {
-        var box = wrap.querySelector('.cm-instr-gifbox');
-        box.innerHTML = '<img src="' + opts.gif + '" alt="How to comment demo">';
+      // If you have a media URL, set it here:
+      if (opts.media) {
+        var box = wrap.querySelector('.cm-instr-media-box');
+        box.innerHTML =
+          `<video width="1072" height="670" controls muted aria-hidden="true">
+            <source src="${opts.media}" type="video/mp4"> </source>
+            Your browser does not support the video tag.
+          </video>`;
       }
       show();
     };
@@ -455,7 +463,7 @@
 
   function openInstructions() {
     window.openInstructionsModal({
-      gif: '/_static/img/comment.gif'
+      media: '/_static/img/comment.mp4'
     });
   }
 
