@@ -7,6 +7,7 @@
     || "NIST | NCCoE";
   var SUBJECT = (document.currentScript && document.currentScript.dataset && document.currentScript.dataset.subject)
     || "[Doc review] {PROJECT} - {N} comments";
+  var STATIC_BASE = (document.currentScript && document.currentScript.dataset && document.currentScript.dataset.staticBase)
   var KEY = 'cm_comment_queue_v1';
 
   if (!window.Annotator) return;
@@ -291,7 +292,6 @@
           '&body=' + encodeURIComponent($bo.value || '');
         try { location.href = href; } catch (e) { }
         close();
-        onSend && onSend(); // let caller clear the queue
       };
 
       $cl.onclick = function () {
@@ -463,7 +463,7 @@
 
   function openInstructions() {
     window.openInstructionsModal({
-      media: '/_static/img/comment.mp4'
+      media: STATIC_BASE + 'img/comment.mp4'
     });
   }
 

@@ -119,6 +119,7 @@
         c.setAttribute('data-email', "{{ email | default('feedback@example.com') }}");
         c.setAttribute('data-site-name', "{{ project | default('Site') }}");
         c.setAttribute('data-subject', "{{ subject | default('[Doc review] ' ~ project ~ ' — {N} comments') }}");
+        c.setAttribute('data-static-base', base);
         document.body.appendChild(c);
       };
       document.body.appendChild(a);
