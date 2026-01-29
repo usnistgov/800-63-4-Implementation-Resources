@@ -1,30 +1,12 @@
-NCCoE Template Documentation
-==========================
+NIST SP 800-63-4 Digital Identity Guidelines FAQs
+===============================================
 
-Add your content using ``reStructuredText`` syntax. See the
-`reStructuredText <https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>`_
-documentation for details.
-
-Documentation for building Sphinx sites at the NCCoE is available from: https://nccoe-rtd-theme-93f2d7.pages.mitre.org
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+TODO: Add Main page content
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
-
+   :maxdepth: 4
+   :caption: FAQ Table of Contents
+   :glob:
+   :hidden:
+ 
+   sp/*

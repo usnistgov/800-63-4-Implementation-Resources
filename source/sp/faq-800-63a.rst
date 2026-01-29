@@ -1,0 +1,38 @@
+I.	800-63A FAQs
+===============
+
+**Q: What are core attributes and what should a CSP consider when determining its set of core attributes? Why doesn't NIST provide a list of minimum required core attributes?**
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+**A:** Revision 4 of SP 800-63A introduces the concept of core attributes and defines them as “the set of identity attributes that the CSP has determined and documented to be required for identity proofing and [to] provide services.” This provided a mechanism to allow for CSPs and RPs to know which attributes are critical to achieving the goals of resolution, validation, and verification as well as necessary for service delivery. This also avoided overly generic requirements such as “shall validate all biographic information” when much of that data is not useful to online uses of identity (e.g., height, weight, eye color). 
+
+When determining which attributes to include in its set of core attributes, a CSP should consider:
+
+- The evidence collection requirements for the IALs it offers.
+- Additional attributes it needs to accomplish resolution, validation, and identity verification at these IALs
+- Additional attributes required for fraud detection, if applicable.
+- Attributes that will be stored in the subscriber accounts for ongoing operations of the identity service and, if applicable, will be shared with RPs and federated partners.
+
+To provide CSPs with the greatest amount of flexibility in designing and implementing their identity services, only mandates the collection of a government identifier within the Core Attributes. This is mandated to support identity resolution within government systems that are highly dependent on government identifiers to support linking of users with their data spread across numerous systems. In addition to the government identifier, section 2.2 provides a set of recommended attributes for identity proofing and enrollment processes. These include name, date of birth, and a physical address. A CSP may choose to include all or some of these recommended attributes depending on the needs of the RPs they serve. They may also expand the attributes they define as “core” based on their RP needs.
+
+However, in keeping with good privacy risk management practices, a CSP should limit its set of core attributes to the minimum needed to conduct its identity service operations, as documented in its practices statement. CSP’s that collect and process attributes beyond what it determines to be its core attributes must do so in alignment with the privacy requirements provided in section 3.3.
+
+**Q: What is the difference between authoritative and credible sources? What are some examples of authoritative and credible sources?**
+---------------------------------------------------------------------------------------------------------------------------------------
+
+**A:** Authoritative sources are organizations that issue evidence and attributes, or third-party organizations that have direct access to the issuing source of such evidence and associated attributes. Direct access implies that a non-issuing source have access to up-to-date attributes and status information about evidence.
+
+Examples of authoritative sources of identity evidence are state DMVs for driver’s licenses, The US State Department of Passports, and SSA for Social Security Numbers and associated data. Examples of authoritative sources that are not issuers but maintain direct access to issuing source data include: 
+
+- The American Association of Motor Vehicle Administrators (AAMVA) whose License Data Verification System (DLDV) provides mediated access to participating state DMV data.    
+- Entities that participate in the Social Security Administrations Electronic Consent Based Social Security Number Verification program. Such organizations can query the SSA’s data set directly for social security number data. 
+A credible source has access to attribute information that can be traced to an authoritative source or maintains identity attribute information obtained from multiple sources that is correlated for accuracy, consistency, and currency. Examples of credible sources include credit bureaus, such as TransUnion, Equifax, and Experian, and data services such as LexisNexis. 
+
+**Q: Must CSPs offer Trusted Referee Services to be Certified?**
+----------------------------------------------------------------
+
+**A:** First, NIST does not run or operate a certification program, and the final version of the Digital Identity Guidelines only recommends that CSPs offer trusted referee services. Trusted Referees represent a critical capability that helps deal with the inevitable exception cases that large scale online services must be prepared to address. For this reason, we recommend that these resources are made available to enable more effective deployment of solutions that can support a larger customer base. 
+
+That said, the CSP doesn’t need to be the sole provider of these resources. In fact, in many cases the RP is better positioned to provide these services due to pre-existing customer relationships, physical locations, and customer outreach capabilities. RPs are therefore encouraged to consider how they can address Trusted Referee capabilities in conjunction with their support CSPs. Additionally, these services could be offered by trusted third parties such as notaries or similar organizations. 
+
+Trusted referees are not required, though we encourage all participants of the ecosystem to explore mechanisms and collaborations to enable secure and accessible exception handling, including trusted referee services.

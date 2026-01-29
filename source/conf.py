@@ -10,7 +10,7 @@ import sys
 
 sys.path.append(os.path.abspath("_themes"))
 
-project = 'NCCoE Template'
+project = 'NIST SP 800-63-4 FAQs'
 author = 'NIST NCCoE'
 email = u'nccoe@nist.gov'
 googleanalytics_id = 'G-RJSMY46M5C'
@@ -65,8 +65,10 @@ html_theme_options = {
     'sticky_navigation': True,
     'navigation_depth': 4,
     'includehidden': True,
-    'titles_only': False,
-    'project_page': 'https://nccoe.nist.gov/projects'
+    'titles_only': False
+    # 'project_page': 'https://nccoe.nist.gov/projects'
+
+
 }
 html_css_files = [
     "custom.css"

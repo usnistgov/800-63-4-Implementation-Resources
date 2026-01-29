@@ -326,10 +326,10 @@
 
             </svg>
           </a>
+
           <a class="project-title" href="{{ pathto(_root_doc) }}">
           {% if not theme_logo_only %}{{ project }}{% endif %}
           </a>
-
           {%- if READTHEDOCS or DEBUG %}
             {%- if theme_version_selector or theme_language_selector %}
               <div class="switch-menus">
@@ -339,9 +339,13 @@
             {%- endif %}
           {%- endif %}
 
-          <a class="project-page-link" href="{{ theme_project_page }}">
-            Go to Project Page
+          {%- if theme_show_goto_home_page %}
+          <!-- Go to Homepage -->
+          <a class="project-page-link" href="{{ pathto(_root_doc) }}">
+            <span class="fa fa-home" style="margin-right:3px;"></span>Homepage
           </a>
+          {%- endif %}           
+
           {%- include "searchbox.html" %}
 
 
