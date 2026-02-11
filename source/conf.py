@@ -10,8 +10,8 @@ import sys
 
 sys.path.append(os.path.abspath("_themes"))
 
-project = 'NIST SP 800-63-4 FAQs'
-author = 'NIST NCCoE'
+project = 'NIST SP 800-63-4'
+author = 'NIST'
 email = u'nccoe@nist.gov'
 googleanalytics_id = 'G-RJSMY46M5C'
 
@@ -30,6 +30,7 @@ extensions = [
     "sphinxcontrib.mermaid",
     "sphinx_datatables",
     "sphinxcontrib.googleanalytics",
+    "sphinx_collapse"    
 ]
 
 templates_path = ['_templates']
@@ -44,7 +45,8 @@ pygments_style = 'default'
 
 
 
-html_logo = "_static/img/nccoe-logo.svg"
+# html_logo = "_static/img/nccoe-logo.svg"
+html_logo = ""
 html_show_sourcelink = False
 html_favicon = "_static/img/favicon.ico"
 
