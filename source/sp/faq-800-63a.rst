@@ -4,7 +4,7 @@ I.	800-63A FAQs
 **Q: What are core attributes and what should a CSP consider when determining its set of core attributes? Why doesn't NIST provide a list of minimum required core attributes?**
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-.. collapse:: Show FAQ Answer
+.. collapse:: Show Answer
 
     **A:** Revision 4 of SP 800-63A introduces the concept of core attributes and defines them as “the set of identity attributes that the CSP has determined and documented to be required for identity proofing and [to] provide services.” This provided a mechanism to allow for CSPs and RPs to know which attributes are critical to achieving the goals of resolution, validation, and verification as well as necessary for service delivery. This also avoided overly generic requirements such as “shall validate all biographic information” when much of that data is not useful to online uses of identity (e.g., height, weight, eye color). 
 
@@ -24,7 +24,7 @@ I.	800-63A FAQs
 **Q: What is the difference between authoritative and credible sources? What are some examples of authoritative and credible sources?**
 ---------------------------------------------------------------------------------------------------------------------------------------
 
-.. collapse:: Show FAQ Answer
+.. collapse:: Show Answer
 
     **A:** Authoritative sources are organizations that issue evidence and attributes, or third-party organizations that have direct access to the issuing source of such evidence and associated attributes. Direct access implies that a non-issuing source have access to up-to-date attributes and status information about evidence.
 
@@ -39,11 +39,11 @@ I.	800-63A FAQs
 **Q: Must CSPs offer Trusted Referee Services to be Certified?**
 ----------------------------------------------------------------
 
-.. collapse:: Show FAQ Answer
+.. collapse:: Show Answer
 
     **A:** First, NIST does not run or operate a certification program, and the final version of the Digital Identity Guidelines only recommends that CSPs offer trusted referee services. Trusted Referees represent a critical capability that helps deal with the inevitable exception cases that large scale online services must be prepared to address. For this reason, we recommend that these resources are made available to enable more effective deployment of solutions that can support a larger customer base. 
 
-    That said, the CSP doesn’t need to be the sole provider of these resources. In fact, in many cases the RP is better positioned to provide these services due to pre-existing customer relationships, physical locations, and customer outreach capabilities. RPs are therefore encouraged to consider how they can address Trusted Referee capabilities in conjunction with their support CSPs. Additionally, these services could be offered by trusted third parties such as notaries or similar organizations. 
+    That said, the CSP doesn't need to be the sole provider of these resources. In fact, in many cases the RP is better positioned to provide these services due to pre-existing customer relationships, physical locations, and customer outreach capabilities. RPs are therefore encouraged to consider how they can address Trusted Referee capabilities in conjunction with their support CSPs. Additionally, these services could be offered by trusted third parties such as notaries or similar organizations. 
 
     Trusted referees are not required, though we encourage all participants of the ecosystem to explore mechanisms and collaborations to enable secure and accessible exception handling, including trusted referee services.
 
