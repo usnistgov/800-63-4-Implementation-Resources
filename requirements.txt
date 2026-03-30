@@ -39,7 +39,7 @@ nh3==0.3.0
 packaging==25.0
 platformdirs==4.3.8
 pycparser==2.22
-Pygments==2.19.2
+Pygments==2.20.0
 PyYAML==6.0.2
 readme_renderer==44.0
 requests==2.32.4
