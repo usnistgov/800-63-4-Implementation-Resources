@@ -10,9 +10,8 @@ import sys
 
 sys.path.append(os.path.abspath("_themes"))
 
-# Edited by Clayton J Barnette 03/24/2026 while moving code from Local to GitLab Pages
-project = 'Digital Identity Guidelines Implementation Resources'
-author = 'NIST Digital Identity Group'
+project = 'NCCoE Template'
+author = 'NIST NCCoE'
 email = u'nccoe@nist.gov'
 googleanalytics_id = 'G-RJSMY46M5C'
 
@@ -31,7 +30,6 @@ extensions = [
     "sphinxcontrib.mermaid",
     "sphinx_datatables",
     "sphinxcontrib.googleanalytics",
-    "sphinx_collapse"    
 ]
 
 templates_path = ['_templates']
@@ -45,8 +43,8 @@ pygments_style = 'default'
 
 
 
-# html_logo = "_static/img/nccoe-logo.svg"
-html_logo = ""
+
+html_logo = "_static/img/nccoe-logo.svg"
 html_show_sourcelink = False
 html_favicon = "_static/img/favicon.ico"
 
@@ -68,7 +66,7 @@ html_theme_options = {
     'navigation_depth': 4,
     'includehidden': True,
     'titles_only': False,
-    'project_page': '/',
+    'project_page': 'https://nccoe.nist.gov/projects'
 }
 html_css_files = [
     "custom.css"

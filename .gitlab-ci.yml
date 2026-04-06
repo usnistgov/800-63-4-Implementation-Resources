@@ -1,33 +1,16 @@
-include:
-  - project: 'nccoe-static-sites/nccoe-rtd-theme'
-    ref: 'main'
-    file: '/ci/templates/sphinx_tests.yml'
+# Use a Python image to run Sphinx
+image: python:latest
 
-variables:
-  # Base URL used by the included Sphinx CI template to fetch helper scripts.
-  SCRIPTS_URL_BASE: https://gitlab.nist.gov/gitlab/nccoe-static-sites/nccoe-rtd-theme/-/raw/main"
-
-stages:
-  - build-sphinx
-  - test
-  - deploy
-
-build_sphinx_app:
-  image: python:latest
-  stage: build-sphinx
-  script:
-    - pip install -r requirements.txt
-    - make html BUILDDIR=public/nccoe-template
-  artifacts:
-    paths:
-      - public/nccoe-template/
-    expire_in: 1 hour
-
+# Define the "pages" job, which is a reserved name for GitLab Pages
 pages:
-  image: busybox:latest
   stage: deploy
+  before_script:
+    - pip install -r requirements.txt
+    # - pip install -U sphinx sphinx-rtd-theme  # Install Sphinx and a common theme
   script:
-    - echo "Deploying GitLab Pages..."
+    - sphinx-build -b html source public # Build reST files from source into public/
   artifacts:
     paths:
-      - public
+      - public                                # GitLab expects the site in this folder
+  rules:
+    - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH # Only deploy from the main branch

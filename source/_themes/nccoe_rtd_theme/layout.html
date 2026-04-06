@@ -159,7 +159,7 @@
   {% endblock %}
   <div class="wy-grid-for-nav">
     {#- SIDE NAV, TOGGLES ON MOBILE #}
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side"">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search">
           {%- block sidebartitle %}
@@ -167,7 +167,7 @@
           {# the logo helper function was removed in Sphinx 6 and deprecated since Sphinx 4 #}
           {# the master_doc variable was renamed to root_doc in Sphinx 4 (master_doc still exists in later Sphinx versions) #}
           {%- set _root_doc = root_doc|default(master_doc) %}
-          <a class="nccoe-logo"  href="{{ pathto(_root_doc) }}" aria-label="NIST | National Cybersecurity Center of Excellence (NCCoE)">
+          <!-- <a class="nccoe-logo"  href="{{ pathto(_root_doc) }}" aria-label="NIST | National Cybersecurity Center of Excellence (NCCoE)"> -->
           
             <!--?xml version="1.0" encoding="UTF-8" standalone="no"?--> 
             <!--
@@ -325,11 +325,11 @@
                 <path class="st5" d="M309,49.3l5.3,0l0,0.8l-4.4,0l0,2.4l4,0l0,0.8l-4,0l0,2.6l4.5,0l0,0.9l-5.4,0L309,49.3z"></path>
               </g> 
               <polyline class="st6" points="143.9,24.8 143.9,40 148.6,42.7 143.9,45.5 143.9,61.2 "></polyline>
--->
+
             </svg>
           </a>
-
-          <a class="project-title" href="{{ pathto(_root_doc) }}">
+-->
+          <a class="project-title" href="{{ pathto(_root_doc) }}" style="padding-top:7px;padding-bottom:2px;margin-bottom:1px;">
           {% if not theme_logo_only %}{{ project }}{% endif %}
           </a>
           {%- if READTHEDOCS or DEBUG %}
@@ -340,18 +340,18 @@
               </div>
             {%- endif %}
           {%- endif %}
+          
 
-          {%- if theme_show_goto_home_page %}
           <!-- Go to Homepage -->
           <a class="project-page-link" href="{{ pathto(_root_doc) }}">
-            <span class="fa fa-home" style="margin-right:3px;"></span>Homepage
+            <span class="fa fa-home" style="margin-right:4px;"></span>Home
           </a>
-          {%- endif %}           
-
+     
+          
           {%- include "searchbox.html" %}
-
-
-
+          
+          
+          
           {%- endblock %}
         </div>
 
@@ -372,6 +372,8 @@
           {%- endblock %}
         </div>
         {%- endblock %}
+        <br>
+        <br>
       </div>
     </nav>
 
