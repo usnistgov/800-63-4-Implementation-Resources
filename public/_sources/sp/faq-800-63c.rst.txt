@@ -1,0 +1,39 @@
+III.	800-63C FAQs
+====================
+
+**Q: What is the difference between Holder-of-Key and Bound Authenticators?**
+-----------------------------------------------------------------------------
+
+.. collapse:: Show Answer
+
+    **A:** A Holder-of-Key (HoK) assertion uses a single cryptographic authenticator known to both the Identity Provider (IdP) and the Relying Party (RP), whereas a Bound Authenticator is managed and verified solely by the RP.
+    FAL3 requires additional confidence that the individual requesting access to a resource at an RP is the same individual who authenticated to the IdP.  
+    This can be achieved by the RP directly authenticating the user after the IdP's assertion, using either a HoK assertion or a bound authenticator. 
+    If HoK is used, the assertion from the IdP will contain the public key of a public-private key pair controlled by the subscriber. For example, if the subscriber has a PIV card, the public key of the PIV Authentication Certificate can be included in the assertion, allowing the RP to use that public key to issue a challenge to the subscriber, who will respond using the associated private key.   
+    If a bound authenticator is used, the IdP's assertion indicates that additional authentication is required at the RP but does not specify the authenticator. Instead, the RP binds a unique phishing-resistant authenticator to the RP subscriber account and manages it. The subscriber then proves possession of that authenticator to the RP when accessing a resource that requires FAL3.
+
+----
+
+**Q: Is PIV login FAL3?**
+-------------------------
+
+.. collapse:: Show Answer
+
+    **A:** No, PIV credentials are used for direct authentication, so on their own, do not meet the requirements for federated login. To create a federated assertion that utilizes a PIV Card, the PIV can be used to authenticate to an Identity Provider (IdP), which then creates a unique and time-limited assertion that is provided to a Relying Party (RP). Where permitted by the IdP-RP trust agreement, this assertion may include attributes that are not present on the PIV card itself, such as authorization attributes. 
+    While the PIV card is an AAL3 authenticator, most federated assertions that utilize a PIV Card will not require FAL3.  A DIRA (Digital Identity Risk Assessment) should be conducted to determine whether FAL3 is required for a particular transaction or if FAL2 is sufficient. FAL3 is required only for the highest risk category of transactions.
+    Additional guidance for PIV Federation is found in SP 800-217, PIV Federation.
+
+----
+
+**Q: Can an mDL be used as a credential? If so, what are the IALs, AALs, and FALs for an mDL?**
+-----------------------------------------------------------------------------------------------
+
+.. collapse:: Show Answer
+
+    **A:** Yes, an mDL can be used as a credential when presented over a federation protocol, with xALs that vary depending on use case and circumstances.
+    NIST SP 800-63-4 introduces a new federation model, subscriber-controlled wallets. The CSP issues signed attribute bundles directly to the subscriber. Those attribute bundles are held in subscriber-controlled wallets that can act as an IdP. The subscriber authenticates to the wallet by presenting an activation factor, and the wallet presents the signed attribute bundle to the RP in an assertion. The RP can then verify both the assertion and the signed attribute bundle. For the mDL model, the mDoc is the signed attribute bundle, and the wallet’s assertion is the presentation of that bundle to the RP.
+    ISO/IEC 18013-5 compliant mDLs are considered digital evidence in the context of NIST SP 800-63A. When mDLs are signed by the issuer, cryptographically bound to the device, and contain the same attributes as physical licenses, they qualify as superior evidence, which can support IAL1, IAL2, and IAL3 workflows. 
+    However, since xALs depend on several factors, the IAL, AAL, and FAL of an mDL presentation can vary depending on the application and ecosystem in which it is used.  
+
+----
+

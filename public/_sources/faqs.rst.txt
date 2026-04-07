@@ -1,0 +1,25 @@
+FAQs
+=====
+
+This is the FAQs
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
