@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-labelledby="title desc">
+  <title id="title">Digital</title>
+  <desc id="desc">A digital credential stored on a phone</desc>
+  <rect x="8" y="8" width="184" height="184" rx="25" fill="#f1f6fd" stroke="#d4dde8" stroke-width="2"/>
+  <g fill="none" stroke="#16447f" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="62" y="34" width="76" height="132" rx="12" fill="#fff"/>
+      <path d="M87 48h26M91 152h18" stroke="#5b8bc9"/>
+      <rect x="75" y="67" width="50" height="67" rx="6" fill="#e3ecf9"/>
+      <path d="M86 80h28M86 91h28M86 102h18"/>
+      <path d="m91 117 7 7 12-14" stroke="#c07f1a" stroke-width="5"/>
+    
+  </g>
+</svg>

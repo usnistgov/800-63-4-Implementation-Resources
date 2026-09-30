@@ -1,0 +1,56 @@
+name: Build and Deploy Site
+
+# Builds the Sphinx site on every push so problems surface on any branch,
+# but only publishes from main.
+#
+# Publishing pushes the built HTML to the nist-pages branch, which the
+# usnistgov pages.nist.gov build system serves at
+#   https://pages.nist.gov/800-63-4-Implementation-Resources/
+# All internal links in the built site are relative, so it works under that
+# path prefix without a base-URL setting.
+
+on:
+  push:
+    branches:
+      - "**"
+
+permissions:
+  contents: write   # needed to push the built site to nist-pages
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup Python 3.12
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements.txt
+
+      - name: Install Sphinx dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install -r requirements.txt
+
+      - name: Build Sphinx site
+        run: make html
+
+      - name: Archive site
+        uses: actions/upload-artifact@v7
+        with:
+          name: site-build
+          path: public
+
+      - name: Deploy to nist-pages
+        uses: peaceiris/actions-gh-pages@v4
+        if: ${{ github.ref == 'refs/heads/main' }}
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: public
+          publish_branch: nist-pages
+          user_name: "github-actions[bot]"
+          user_email: "github-actions[bot]@users.noreply.github.com"
+          commit_message: ${{ github.event.head_commit.message }}

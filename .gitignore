@@ -1,0 +1,8 @@
+.DS_Store
+._*
+public/ 
+venv
+build/
+.venv
+__pycache__/
+*.pyc

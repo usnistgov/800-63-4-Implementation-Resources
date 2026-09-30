@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 200 200" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;">
+    <path d="M192,33L192,167C192,180.798 180.798,192 167,192L33,192C19.202,192 8,180.798 8,167L8,33C8,19.202 19.202,8 33,8L167,8C180.798,8 192,19.202 192,33Z" style="fill:rgb(241,246,253);stroke:rgb(212,221,232);stroke-width:2px;"/>
+    <g>
+        <path d="M143,40L143,160C143,167.175 137.175,173 130,173L70,173C62.825,173 57,167.175 57,160L57,40C57,32.825 62.825,27 70,27L130,27C137.175,27 143,32.825 143,40Z" style="fill:white;stroke:rgb(22,68,127);stroke-width:4.5px;stroke-linecap:round;stroke-linejoin:round;"/>
+        <path d="M86,42L114,42M92,159L108,159" style="fill:none;fill-rule:nonzero;stroke:rgb(91,139,201);stroke-width:4.5px;stroke-linecap:round;stroke-linejoin:round;"/>
+        <path d="M133,71L133,131C133,134.311 130.311,137 127,137L73,137C69.689,137 67,134.311 67,131L67,71C67,67.689 69.689,65 73,65L127,65C130.311,65 133,67.689 133,71Z" style="fill:rgb(227,236,249);stroke:rgb(22,68,127);stroke-width:4.5px;stroke-linecap:round;stroke-linejoin:round;"/>
+        <circle cx="87" cy="92" r="9" style="fill:white;stroke:rgb(22,68,127);stroke-width:4.5px;stroke-linecap:round;stroke-linejoin:round;"/>
+        <path d="M74,116C75,106 80,101 87,101C94,101 99,106 100,116M105,84L123,84M105,96L123,96M105,108L117,108" style="fill:none;fill-rule:nonzero;stroke:rgb(22,68,127);stroke-width:4.5px;stroke-linecap:round;stroke-linejoin:round;"/>
+        <g transform="matrix(0.890364,0,0,0.889537,13.7967,14.2439)">
+            <circle cx="109" cy="124" r="5.5" style="fill:none;stroke:rgb(192,127,26);stroke-width:3.5px;stroke-linecap:round;stroke-linejoin:round;"/>
+        </g>
+        <g transform="matrix(0.890364,0,0,0.889537,13.7967,14.2439)">
+            <path d="M114.5,124L128,124M121,124L121,130M127,124L127,128" style="fill:none;fill-rule:nonzero;stroke:rgb(192,127,26);stroke-width:3.5px;stroke-linecap:round;stroke-linejoin:round;"/>
+        </g>
+    </g>
+</svg>

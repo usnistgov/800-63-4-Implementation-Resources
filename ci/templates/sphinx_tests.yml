@@ -1,0 +1,48 @@
+variables:
+  SCRIPTS_PATH: "ci/scripts"
+  SPHINX_SOURCE_DIR: "source"
+  PUBLIC_BUILDDIR: "public/test-build"
+
+.sphinx_common:
+  image: python:latest
+  stage: test
+  variables:
+    PIP_NO_CACHE_DIR: "off"
+  before_script: |
+    pip install -r requirements.txt || true
+    mkdir -p "${PUBLIC_BUILDDIR}"
+
+    test -f "${SCRIPTS_PATH}/convert_sphinx_warnings_to_junit.py"
+    test -f "${SCRIPTS_PATH}/convert_linkcheck_to_junit.py"
+    test -f "${SCRIPTS_PATH}/check_images_alttext_to_junit.py"
+    test -f "${SCRIPTS_PATH}/check_gitlab_pages_links_to_junit.py"
+
+sphinx_tests:
+  extends: .sphinx_common
+  script:
+    - sphinx-build -b html "${SPHINX_SOURCE_DIR}" "${PUBLIC_BUILDDIR}" -v 2> sphinx-warnings.log || true
+    - python3 "${SCRIPTS_PATH}/convert_sphinx_warnings_to_junit.py" sphinx-warnings.log sphinx-warnings-junit.xml || true
+    - echo "Wrote sphinx-warnings-junit.xml"
+    - sphinx-build -b linkcheck "${SPHINX_SOURCE_DIR}" "${PUBLIC_BUILDDIR}-linkcheck" -v > linkcheck.log 2>&1 || true
+    - python3 "${SCRIPTS_PATH}/convert_linkcheck_to_junit.py" linkcheck.log linkcheck-junit.xml || true
+    - echo "Wrote linkcheck-junit.xml"
+    - python3 "${SCRIPTS_PATH}/check_images_alttext_to_junit.py" "${SPHINX_SOURCE_DIR}" images-alttext-junit.xml || true
+    - echo "Wrote images-alttext-junit.xml"
+    - python3 "${SCRIPTS_PATH}/check_gitlab_pages_links_to_junit.py" "${SPHINX_SOURCE_DIR}" gitlab-links-junit.xml || true
+    - echo "Wrote gitlab-links-junit.xml"
+  artifacts:
+    paths:
+      - sphinx-warnings.log
+      - sphinx-warnings-junit.xml
+      - linkcheck.log
+      - linkcheck-junit.xml
+      - images-alttext-junit.xml
+      - gitlab-links-junit.xml
+    reports:
+      junit:
+        - sphinx-warnings-junit.xml
+        - linkcheck-junit.xml
+        - images-alttext-junit.xml
+        - gitlab-links-junit.xml
+    expire_in: 1 hour
+  allow_failure: true
