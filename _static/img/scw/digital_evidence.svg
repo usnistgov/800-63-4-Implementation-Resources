@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-labelledby="title desc">
+  <title id="title">Digital evidence</title>
+  <desc id="desc">A credential examined through a magnifying glass</desc>
+  <rect x="8" y="8" width="184" height="184" rx="25" fill="#f1f6fd" stroke="#d4dde8" stroke-width="2"/>
+  <g fill="none" stroke="#16447f" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="43" y="37" width="103" height="121" rx="9" fill="#fff"/>
+      <circle cx="77" cy="77" r="12" fill="#e3ecf9"/>
+      <path d="M57 108c2-12 10-19 20-19s18 7 20 19" fill="#e3ecf9"/>
+      <path d="M108 70h23M108 84h23M59 126h41"/>
+      <circle cx="125" cy="125" r="22" fill="#fff"/>
+      <path d="m140 141 21 21"/>
+      <path d="m116 124 7 7 12-15" stroke="#c07f1a" stroke-width="4.5"/>
+    
+  </g>
+</svg>

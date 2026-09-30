@@ -1,0 +1,1372 @@
+/* =========================================================
+   custom.css — drop-in override for nccoe_rtd_theme
+   ---------------------------------------------------------
+   Lives at: source/_static/custom.css
+   Already wired in via conf.py: html_css_files = ["custom.css"]
+   No template edits required.
+   ---------------------------------------------------------
+   This file does three things:
+   1. Imports Inter + JetBrains Mono from Google Fonts.
+   2. Declares a design-token layer at :root (NCCoE blues + neutrals).
+   3. Overrides the major RTD/wy-* selectors so the theme reads
+      modern without forking theme.css.
+
+   New page components (landing hero, SP cards, FAQ items) get
+   their own classes — see source/_static/components.css OR drop
+   those rules at the bottom of this file. Keep the override
+   block above the components block so cascade works.
+   ========================================================= */
+
+   @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400..900&family=JetBrains+Mono:wght@400;500&display=swap");
+
+   /* ── 1. Design tokens ─────────────────────────────────────── */
+   :root {
+     --c-primary:        #1e5aa8;   /* deep blue */
+     --c-primary-700:    #16447f;
+     --c-primary-300:    #5b8bc9;   /* medium blue */
+     --c-primary-100:    #e3ecf9;
+     --c-primary-50:     #f1f6fd;
+     --c-accent:         #c07f1a;   /* amber */
+     --c-accent-soft:    #fff3dc;
+     --c-tan:            #c9a86b;
+   
+     --c-ink:            #142033;
+     --c-ink-soft:       #2f3f54;
+     --c-muted:          #526174;
+     --c-muted-2:        #7d8da1;
+     --c-line:           #d4dde8;
+     --c-line-soft:      #e4ebf3;
+     --c-page:           #f4f7fb;
+     --c-surface:        #ffffff;
+     --c-surface-2:      #f8fafc;
+   
+     --c-ok:             #0b6a54;
+     --c-ok-bg:          #e6f7f1;
+     --c-warn:           #8a4d00;
+     --c-warn-bg:        #fff3dc;
+     --c-danger:         #a12a2a;
+     --c-danger-bg:      #f9e7e7;
+   
+     /* One sans for body and headings. Inter is loaded above so every
+        visitor gets the same face; the system-ui fallbacks only matter
+        if Google Fonts is blocked. */
+     --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system,
+                  BlinkMacSystemFont, 'Segoe UI', sans-serif;
+     --font-body: var(--font-sans);
+     --font-head: var(--font-sans);
+     --font-mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+   }
+   /* ── 2. Body + RTD shell overrides ────────────────────────── */
+   body.wy-body-for-nav {
+     font-family: var(--font-body);
+     color: var(--c-ink);
+     font-size: 15px;
+     line-height: 1.55;
+     -webkit-font-smoothing: antialiased;
+   }
+   
+   /* The RTD theme renders heading + body in a couple of font stacks.
+      Re-route everything through our tokens so type stays consistent. */
+   .wy-nav-content h1, .wy-nav-content h2, .wy-nav-content h3,
+   .wy-nav-content h4, .wy-nav-content h5, .wy-nav-content h6,
+   .rst-content h1, .rst-content h2, .rst-content h3,
+   .rst-content h4, .rst-content h5, .rst-content h6 {
+     font-family: var(--font-head);
+     color: var(--c-ink);
+     font-weight: 700;
+     letter-spacing: -0.022em;
+   }
+   /* Tracking tightens as size grows — large Inter needs more negative
+      tracking than small Inter to read evenly. */
+   .rst-content h1 { font-size: 30px; line-height: 1.2; font-weight: 800; letter-spacing: -0.035em; }
+   .rst-content h2 { font-size: 22px; line-height: 1.25; margin-top: 28px; font-weight: 800; letter-spacing: -0.028em; }
+   .rst-content h3 { font-size: 17px; line-height: 1.35; margin-top: 22px; font-weight: 700; letter-spacing: -0.018em; }
+   
+   .rst-content p, .rst-content li { color: var(--c-ink-soft); }
+   .rst-content a { color: var(--c-primary); }
+   .rst-content a:hover { color: var(--c-primary-700); }
+   
+   /* ── Left sidebar (wy-nav-side) ───────────────────────────── */
+   .wy-nav-side {
+     /* theme.css hardcodes font-family: Lato on this element, and Lato is
+        no longer loaded — route it through the token like everything else. */
+     font-family: var(--font-body);
+     background: var(--c-page);
+     border-right: 1px solid var(--c-line);
+   }
+   /* The theme hardcodes 300px on the sidebar's inner pieces as well as
+      on .wy-nav-side itself, so widening only the sidebar leaves the
+      search box's bottom border and the nav hover/current backgrounds
+      stopping short of the edge — it reads as though nothing widened.
+
+      .wy-side-scroll is deliberately 20px wider than the sidebar: the
+      overhang carries the native scrollbar, which .wy-nav-side clips via
+      overflow-x: hidden. Keep that 20px offset and derive everything from
+      the parent rather than repeating a fixed number. */
+   .wy-side-scroll { width: calc(100% + 20px); }
+   .wy-side-nav-search,
+   .wy-menu-vertical { width: calc(100% - 20px); }
+   .wy-side-nav-search {
+     background: var(--c-page);
+     border-bottom: 1px solid var(--c-line);
+     padding: 16px 18px;
+   }
+   .wy-side-nav-search .project-title,
+   .wy-side-nav-search a.project-title {
+     font-family: var(--font-head);
+     font-weight: 800;
+     font-size: 18px;
+     color: var(--c-ink);
+     letter-spacing: -0.022em;
+     line-height: 1.25;
+   }
+   /* A touch larger once there's room for it; mobile keeps 18px so the
+      two-line title doesn't crowd the collapsed header. */
+   @media screen and (min-width: 769px) {
+     .wy-side-nav-search .project-title,
+     .wy-side-nav-search a.project-title { font-size: 20px; }
+   }
+   .wy-side-nav-search input[type="text"] {
+     font-family: var(--font-body);   /* inputs don't inherit it */
+     background: white;
+     border: 1px solid var(--c-line);
+     border-radius: 4px;
+     font-size: 13px;
+     padding: 7px 10px;
+     color: var(--c-ink);
+   }
+   .wy-side-nav-search .project-page-link {
+     font-size: 14.5px;
+     color: var(--c-primary);
+     margin-top: 8px;
+   }
+   
+   /* Vertical menu — flat link list with primary-tinted active state */
+   .wy-menu-vertical { padding: 6px 0 24px; }
+   .wy-menu-vertical a {
+     font-family: var(--font-body);
+     font-size: 13.5px;
+     color: var(--c-ink-soft);
+     padding: 6px 18px;
+     border-left: 3px solid transparent;
+   }
+   .wy-menu-vertical a:hover {
+     background: white;
+     color: var(--c-ink);
+   }
+   .wy-menu-vertical li.current > a,
+   .wy-menu-vertical li.toctree-l1.current > a,
+   .wy-menu-vertical li.on a {
+     background: white;
+     color: var(--c-primary);
+     font-weight: 700;
+     border-left-color: var(--c-primary);
+   }
+   .wy-menu-vertical p.caption {
+     text-transform: uppercase;
+     letter-spacing: 0.08em;
+     font-size: 10.5px;
+     font-weight: 700;
+     color: var(--c-muted);
+     padding: 14px 18px 8px;
+     margin-bottom: 16px;
+     font-family: var(--font-body);
+   }
+   .wy-menu-vertical li.toctree-l2 a { padding-left: 32px; font-size: 13px; }
+   .wy-menu-vertical li.toctree-l3 a { padding-left: 46px; font-size: 12.5px; color: var(--c-muted); }
+   
+   /* ── Top mobile bar ───────────────────────────────────────── */
+   .wy-nav-top {
+     background: var(--c-primary);
+     font-family: var(--font-head);
+   }
+   
+   /* ── Main content area — give the docs more room ──────────── */
+   .wy-nav-content {
+     max-width: 1100px;       /* up from 800px so the DIRM tool fits */
+     padding: 0;              /* breadcrumb + inner-pad take over */
+     background: white;
+   }
+   .wy-nav-content-wrap { background: white; }
+
+   /* ── Wide viewports: widen the sidebar, recentre the column ──
+      The RTD theme pins .wy-nav-content hard left above 1300px
+      (@media min-width:1300px { .wy-nav-content { margin: 0 } }) and
+      relies on a grey .wy-nav-content-wrap to fill the leftover space.
+      We paint that wrap white, so on a wide window the effect is a
+      column stuck against the sidebar with a blank void to its right.
+
+      Undo the pin so the column recentres in the space the sidebar
+      leaves, and step the sidebar up a little as the window grows.
+      max-width stays at 1100px, so the column never gets wider —
+      it only slides. Each sidebar width must be mirrored by the
+      matching .wy-nav-content-wrap margin-left. */
+   @media screen and (min-width: 1300px) {
+     .wy-nav-content {
+       margin-left: auto;
+       margin-right: auto;
+     }
+   }
+   /* Each step starts well past sidebar + 1100px, so widening the
+      sidebar never eats into the column's width. */
+   @media screen and (min-width: 1600px) {
+     .wy-nav-side { width: 340px; }
+     .wy-nav-content-wrap { margin-left: 340px; }
+   }
+   @media screen and (min-width: 1920px) {
+     .wy-nav-side { width: 380px; }
+     .wy-nav-content-wrap { margin-left: 380px; }
+   }
+   
+   /* The breadcrumb row */
+   .wy-breadcrumbs {
+     padding: 12px 32px;
+     border-bottom: 1px solid var(--c-line-soft);
+     background: var(--c-surface-2);
+     /* theme.css gives .fa/.icon font-size: inherit, so the home icon
+        scales with this rather than needing its own size. */
+     font-size: 14px;
+   }
+   .wy-breadcrumbs li { color: var(--c-muted); }
+   .wy-breadcrumbs li a { color: var(--c-primary); }
+   .wy-breadcrumbs-aside { display: none; }   /* "view source" link clutter */
+   
+   /* The actual doc body inside the content wrapper */
+   .rst-content { padding: 28px 32px 36px; }
+   .rst-content > .section,
+   .rst-content > div.document { padding: 0; }
+   
+   /* ── Buttons / CTAs ──────────────────────────────────────── */
+   .btn, a.btn {
+     font-family: var(--font-body);
+     font-weight: 700;
+     font-size: 14px;
+     letter-spacing: 0.01em;
+     padding: 8px 16px;
+     border-radius: 4px;
+     border: 1px solid transparent;
+     background: var(--c-primary);
+     color: white !important;
+     display: inline-flex;
+     align-items: center;
+     gap: 6px;
+     text-decoration: none;
+     line-height: 1.2;
+   }
+   .btn:hover, a.btn:hover { background: var(--c-primary-700); color: white !important; }
+   .btn.secondary {
+     background: white;
+     color: var(--c-primary) !important;
+     border-color: var(--c-line);
+   }
+   .btn.secondary:hover { background: var(--c-primary-50); border-color: var(--c-primary-300); }
+   .btn.ghost { background: transparent; color: var(--c-primary) !important; }
+   .btn.ghost:hover { background: var(--c-primary-50); }
+   
+   /* ── Navigation buttons (Sphinx RTD previous/next) ──────────────────────────────────────── */
+   .btn.btn-neutral {
+     background: var(--c-primary) !important;
+     color: white !important;
+     border-color: var(--c-primary) !important;
+   }
+   .btn.btn-neutral:hover {
+     background: var(--c-primary-700) !important;
+     color: white !important;
+   }
+   
+   /* Ensure prev/next buttons sit below content with breathing room */
+   .page-footer .rst-footer-buttons {
+     clear: both;
+     margin-top: 18px;
+     padding-top: 14px;
+     border-top: 1px solid var(--c-line-soft);
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+     gap: 12px;
+   }
+   .page-footer .rst-footer-buttons .float-left,
+   .page-footer .rst-footer-buttons .float-right {
+     float: none !important;
+     margin: 0;
+   }
+   @media (max-width: 700px) {
+     .page-footer .rst-footer-buttons {
+       flex-wrap: wrap;
+     }
+   }
+   
+   /* ── Admonitions (note, warning, important) ──────────────── */
+   .rst-content .admonition {
+     border: 1px solid var(--c-line);
+     border-left: 3px solid var(--c-primary);
+     background: var(--c-primary-50);
+     border-radius: 4px;
+     padding: 12px 16px;
+     margin: 14px 0;
+   }
+   .rst-content .admonition .admonition-title {
+     font-family: var(--font-body);
+     font-weight: 700;
+     font-size: 13px;
+     color: var(--c-ink);
+     background: none;
+     padding: 0;
+     margin: 0 0 4px;
+   }
+   .rst-content .admonition.warning   { background: var(--c-warn-bg);  border-left-color: var(--c-accent); }
+   .rst-content .admonition.danger,
+   .rst-content .admonition.error     { background: var(--c-danger-bg); border-left-color: var(--c-danger); }
+   .rst-content .admonition.tip,
+   .rst-content .admonition.hint      { background: var(--c-ok-bg);     border-left-color: var(--c-ok); }
+   
+   /* ── Tables ──────────────────────────────────────────────── */
+   .rst-content table.docutils,
+   .rst-content table.field-list {
+     border: 1px solid var(--c-line);
+     border-radius: 4px;
+     border-collapse: separate;
+     border-spacing: 0;
+     overflow: hidden;
+     font-size: 13px;
+   }
+   .rst-content table.docutils th {
+     /* Must stay set: theme.css gives th.head a #3d78a9 background, and
+        without an override here the dark header text lands on blue. */
+     background: var(--c-line-soft);
+     color: var(--c-ink-soft);
+     font-family: var(--font-body);
+     font-weight: 700;
+     font-size: 11.5px;
+     text-transform: uppercase;
+     letter-spacing: 0.05em;
+     padding: 10px;
+     border-bottom: 1px solid var(--c-line);
+   }
+   .rst-content table.docutils td {
+     padding: 9px 10px;
+     border-bottom: 1px solid var(--c-line-soft);
+     vertical-align: top;
+   }
+   .rst-content table.docutils tr:last-child td { border-bottom: 0; }
+   
+   /* ── Code blocks ─────────────────────────────────────────── */
+   .rst-content code, .rst-content tt {
+     font-family: var(--font-mono);
+     font-size: 12.5px;
+     background: white;
+     border: 1px solid var(--c-line);
+     border-radius: 3px;
+     padding: 0 4px;
+     color: var(--c-ink);
+   }
+   .rst-content div[class*="highlight"] {
+     border: 1px solid var(--c-line);
+     border-radius: 4px;
+     background: var(--c-surface-2);
+   }
+   
+   /* ── Footer / version selector chrome ────────────────────── */
+   .rst-versions {
+     background: var(--c-ink);
+     border-top: 1px solid #0a1220;
+   }
+   .rst-versions a, .rst-versions .rst-current-version { color: #c6d2e0; }
+   
+   /* =========================================================
+      Page components used by the redesigned landing & FAQ.
+      These are designed to be invoked via .. raw:: html blocks
+      in the .rst sources. See landing.rst.example for usage.
+      ========================================================= */
+   
+   /* Hero block at the top of the landing page */
+   .sphx-hero {
+     background: linear-gradient(180deg, var(--c-primary-50) 0%, var(--c-surface) 100%);
+     border: 1px solid var(--c-line);
+     border-radius: 8px;
+     padding: 36px 40px;
+     margin-bottom: 24px;
+     position: relative;
+     overflow: hidden;
+   }
+   .sphx-hero h1,
+   .sphx-hero .hero-title {
+     font-family: var(--font-head);
+     font-size: 32px;
+     font-weight: 800;
+     letter-spacing: -0.038em;
+     line-height: 1.15;
+     margin: 8px 0;
+     max-width: 22ch;
+     color: var(--c-ink);
+   }
+   .sphx-hero .lede {
+     max-width: 64ch;
+     font-size: 16px;
+     color: var(--c-ink-soft);
+     line-height: 1.55;
+   }
+   .sphx-hero .badge {
+     display: inline-block;
+     font-size: 11px;
+     font-weight: 700;
+     letter-spacing: 0.08em;
+     text-transform: uppercase;
+     padding: 3px 8px;
+     border-radius: 999px;
+     color: var(--c-primary);
+     background: var(--c-primary-100);
+     border: 1px solid var(--c-primary-300);
+   }
+   .sphx-hero .ctas {
+     list-style: none;
+     margin: 18px 0 0;
+     padding: 0;
+     display: flex;
+     gap: 10px;
+     flex-wrap: wrap;
+   }
+   .sphx-hero .ctas li {
+     list-style: none !important;
+     display: block;
+     margin: 0;
+     padding: 0;
+   }
+   .sphx-hero .ctas li p {
+     margin: 0;
+   }
+   .sphx-hero .ctas a {
+     font-family: var(--font-body);
+     font-weight: 700;
+     font-size: 14px;
+     letter-spacing: 0.01em;
+     padding: 8px 16px;
+     border-radius: 4px;
+     border: 1px solid transparent;
+     display: inline-flex;
+     align-items: center;
+     gap: 6px;
+     text-decoration: none;
+     line-height: 1.2;
+   }
+   .sphx-hero .ctas li:nth-child(1) a {
+     background: var(--c-primary);
+     color: white !important;
+   }
+   .sphx-hero .ctas li:nth-child(1) a:hover {
+     background: var(--c-primary-700);
+     color: white !important;
+   }
+   .sphx-hero .ctas li:nth-child(2) a {
+     background: white;
+     color: var(--c-primary) !important;
+     border-color: var(--c-line);
+   }
+   .sphx-hero .ctas li:nth-child(2) a:hover {
+     background: var(--c-primary-50);
+     border-color: var(--c-primary-300);
+   }
+   .sphx-hero .ctas li:nth-child(3) a {
+     background: transparent;
+     color: var(--c-primary) !important;
+   }
+   .sphx-hero .ctas li:nth-child(3) a:hover {
+     background: var(--c-primary-50);
+   }
+   
+   /* The four SP volume cards on the landing page */
+   .sp-grid {
+     margin: 20px 0 28px;
+   }
+   .sp-grid .sd-card.sp-card {
+     background: var(--c-surface);
+     border: 1px solid var(--c-line);
+     border-radius: 8px;
+     padding: 18px;
+     display: flex;
+     flex-direction: column;
+     min-height: 100%;
+     gap: 10px;
+     text-decoration: none !important;
+     color: inherit !important;
+     transition: border-color .12s ease, box-shadow .12s ease;
+   }
+   .sp-grid .sd-card.sp-card:hover {
+     border-color: var(--c-primary-300);
+     box-shadow: 0 6px 20px rgba(16,101,156,0.08);
+   }
+   .sp-grid .sd-card.sp-card .sd-card-header {
+     border: 0;
+     background: transparent;
+     padding: 0;
+     position: relative;
+   }
+   .sp-grid .sd-card.sp-card .sd-card-header::before {
+     content: "63";
+     height: 96px;
+     border-radius: 6px;
+     margin: 0 0 12px;
+     display: grid;
+     place-items: center;
+     font-family: var(--font-head);
+     font-weight: 700;
+     font-size: 28px;
+     color: white !important;
+     position: relative;
+     overflow: hidden;
+     background:
+       radial-gradient(120% 80% at 100% 0%, rgba(255,255,255,0.20), transparent 60%),
+       repeating-linear-gradient(135deg, transparent 0 14px, rgba(255,255,255,0.10) 14px 16px),
+       linear-gradient(135deg, #1e5aa8, #5b8bc9);
+   }
+   .sp-grid .sd-card.sp-card.v-63a .sd-card-header::before { content: "63A"; }
+   .sp-grid .sd-card.sp-card.v-63b .sd-card-header::before { content: "63B"; }
+   .sp-grid .sd-card.sp-card.v-63c .sd-card-header::before { content: "63C"; }
+   .sp-grid .sd-card.sp-card.v-63 .sd-card-header::before {
+     background:
+       radial-gradient(120% 80% at 100% 0%, rgba(255,255,255,0.20), transparent 60%),
+       repeating-linear-gradient(135deg, transparent 0 14px, rgba(255,255,255,0.10) 14px 16px),
+       linear-gradient(135deg, #1e5aa8, #5b8bc9);
+   }
+   .sp-grid .sd-card.sp-card.v-63a .sd-card-header::before {
+     background:
+       radial-gradient(120% 80% at 100% 0%, rgba(255,255,255,0.20), transparent 60%),
+       repeating-linear-gradient(135deg, transparent 0 14px, rgba(255,255,255,0.10) 14px 16px),
+       linear-gradient(135deg, #0b6a54, #3f9a80);
+   }
+   .sp-grid .sd-card.sp-card.v-63b .sd-card-header::before {
+     background:
+       radial-gradient(120% 80% at 100% 0%, rgba(255,255,255,0.20), transparent 60%),
+       repeating-linear-gradient(135deg, transparent 0 14px, rgba(255,255,255,0.10) 14px 16px),
+       linear-gradient(135deg, #8a4d00, #c98f3f);
+   }
+   .sp-grid .sd-card.sp-card.v-63c .sd-card-header::before {
+     background:
+       radial-gradient(120% 80% at 100% 0%, rgba(255,255,255,0.20), transparent 60%),
+       repeating-linear-gradient(135deg, transparent 0 14px, rgba(255,255,255,0.10) 14px 16px),
+       linear-gradient(135deg, #73264a, #ad627f);
+   }
+   .sp-grid .sd-card.sp-card .num {
+     font-family: var(--font-mono);
+     font-size: 11.5px;
+     letter-spacing: 0.08em;
+     color: var(--c-muted);
+     font-weight: 700;
+     text-transform: uppercase;
+     margin: 0 0 4px;
+   }
+   .sp-grid .sd-card.sp-card .sd-card-header p.sd-card-text:last-child {
+     font-family: var(--font-head);
+     font-weight: 700;
+     letter-spacing: -0.018em;
+     font-size: 17.5px;
+     margin: 0;
+     color: var(--c-ink);
+   }
+   .sp-grid .sd-card.sp-card .sd-card-body {
+     border: 0;
+     padding: 0;
+     margin-top: 2px;
+   }
+   .sp-grid .sd-card.sp-card .sd-card-body p {
+     font-size: 14.5px;
+     color: var(--c-ink-soft);
+     line-height: 1.5;
+     margin: 0;
+   }
+   /* Card footer holds the two real links (pages.nist.gov + CSRC).
+      sphinx_design's :link: renders an absolutely-positioned
+      .sd-stretched-link over the whole card, so the footer needs its own
+      stacking context to stay clickable. */
+   .sp-grid .sd-card.sp-card .sd-card-footer.sp-card-links {
+     margin-top: auto;
+     padding: 8px 0 0;
+     border: 0;
+     border-top: 1px solid var(--c-line-soft);
+     background: transparent;
+     position: relative;
+     z-index: 2;   /* .sd-stretched-link::after is z-index: 1 */
+   }
+   .sp-grid .sd-card.sp-card .sd-card-footer.sp-card-links p {
+     margin: 0;
+   }
+   .sp-grid .sd-card.sp-card .sd-card-footer.sp-card-links p + p {
+     margin-top: 5px;
+   }
+   .sp-grid .sd-card.sp-card .sd-card-footer.sp-card-links a {
+     font-size: 12.5px;
+     font-weight: 700;
+     color: var(--c-primary) !important;
+     text-decoration: none !important;
+   }
+   .sp-grid .sd-card.sp-card .sd-card-footer.sp-card-links a:hover {
+     text-decoration: underline !important;
+   }
+   
+   /* What-you'll-find card grid (3 cols × 2 rows on the home page) */
+   .what-grid {
+     margin: 14px 0 24px;
+   }
+   .what-grid .sd-card.what-card {
+     border: 1px solid var(--c-line);
+     border-radius: 6px;
+     padding: 16px 18px;
+     background: white;
+     min-height: 100%;
+   }
+   .what-grid .sd-card.what-card .sd-card-header {
+     border: 0;
+     background: transparent;
+     padding: 0;
+     margin: 0 0 8px;
+   }
+   .what-grid .sd-card.what-card .icon {
+     width: 38px; height: 38px; border-radius: 8px;
+     background: var(--c-primary-100); color: var(--c-primary);
+     display: grid; place-items: center;
+     font-family: var(--font-mono); font-weight: 700; font-size: 18px;
+     line-height: 1;
+     margin-bottom: 12px;
+   }
+   .what-grid .sd-card.what-card .sd-card-header p.sd-card-text:last-child {
+     font-family: var(--font-head);
+     font-weight: 700;
+     letter-spacing: -0.016em;
+     font-size: 16.5px; color: var(--c-ink);
+     text-transform: none; letter-spacing: 0;
+     margin: 0 0 4px;
+   }
+   .what-grid .sd-card.what-card .sd-card-body {
+     border: 0;
+     padding: 0;
+   }
+   .what-grid .sd-card.what-card .sd-card-body p {
+     font-size: 14.5px;
+     line-height: 1.5;
+     color: var(--c-ink-soft);
+     margin: 0;
+   }
+   
+   /* Shared listing style for Blogs + Webinars */
+   .rst-content .blog-entry,
+   .rst-content .webinar-entry {
+     margin: 0 0 14px;
+     padding: 0 0 12px;
+     border-bottom: 1px solid var(--c-line-soft);
+   }
+   .rst-content .blog-entry:last-of-type,
+   .rst-content .webinar-entry:last-of-type {
+     border-bottom: 0;
+     margin-bottom: 0;
+     padding-bottom: 0;
+   }
+   .rst-content .blog-entry > p:first-child,
+   .rst-content .webinar-entry > p:first-child {
+     margin: 0 0 4px;
+     font-weight: 700;
+   }
+   .rst-content .blog-entry > .line-block,
+   .rst-content .webinar-entry > .line-block {
+     margin: 0;
+   }
+   .rst-content .blog-entry > .line-block .line:first-child,
+   .rst-content .webinar-entry > .line-block .line:first-child {
+     color: var(--c-ink);
+   }
+   
+   /* FAQ pattern for native RST + sphinx_collapse */
+   .faq-meta {
+     color: var(--c-muted);
+     font-size: 14px;
+     margin-bottom: 14px;
+   }
+   
+   .rst-content .faq-meta p {
+     color: var(--c-muted);
+     font-size: 14px;
+     margin: 0;
+   }
+   
+   .faq-toc {
+     background: var(--c-surface-2);
+     border: 1px solid var(--c-line);
+     border-radius: 6px;
+     padding: 14px 18px;
+     margin: 16px 0 22px;
+   }
+   .faq-toc h4 {
+     font-family: var(--font-head);
+     font-size: 13.5px;
+     margin: 0 0 8px;
+     text-transform: none;
+     letter-spacing: 0;
+     color: var(--c-ink);
+   }
+   .faq-toc ul {
+     list-style: none;
+     margin: 0;
+     padding: 0;
+     display: flex;
+     gap: 6px;
+     flex-wrap: wrap;
+   }
+   .faq-toc li {
+     margin: 0;
+     padding: 0;
+   }
+   .faq-toc a {
+     font-size: 12.5px;
+     font-weight: 700;
+     padding: 4px 10px;
+     display: inline-block;
+     border-radius: 999px;
+     background: white;
+     border: 1px solid var(--c-line);
+     color: var(--c-primary);
+   }
+   .faq-toc a:hover { background: var(--c-primary-50); text-decoration: none; }
+   
+   .rst-content .sphinx_collapse {
+     border: 1px solid var(--c-line);
+     border-radius: 6px;
+     margin: 0 0 10px;
+     background: white;
+     overflow: hidden;
+   }
+   .rst-content .sphinx_collapse__label {
+     list-style: none;
+     cursor: pointer;
+     padding: 14px 56px 14px 18px;
+     font-family: var(--font-head);
+     font-weight: 600;
+     font-size: 15px;
+     color: var(--c-ink);
+     position: relative;
+     line-height: 1.4;
+   }
+   .rst-content .sphinx_collapse__label .sphinx_collapse__icon {
+     display: none;
+   }
+   .rst-content .sphinx_collapse__label::after {
+     content: "+";
+     position: absolute;
+     right: 18px;
+     top: 50%;
+     transform: translateY(-50%);
+     width: 26px;
+     height: 26px;
+     border-radius: 999px;
+     background: var(--c-primary-50);
+     color: var(--c-primary);
+     display: grid;
+     place-items: center;
+     font-weight: 700;
+     font-size: 16px;
+   }
+   .rst-content .sphinx_collapse__input:checked + .sphinx_collapse__label {
+     color: var(--c-primary);
+   }
+   .rst-content .sphinx_collapse__input:checked + .sphinx_collapse__label::after {
+     content: "−";
+     background: var(--c-primary);
+     color: white;
+   }
+   .rst-content .sphinx_collapse__content {
+     padding: 14px 22px 18px;
+     border-top: 1px solid var(--c-line-soft);
+     background: var(--c-surface-2);
+     font-size: 14px;
+     line-height: 1.6;
+     color: var(--c-ink-soft);
+   }
+   
+   /* H2 with a colored "vol" tag — for FAQ volume separators */
+   .faq-section h2 .vol {
+     display: inline-block;
+     font-family: var(--font-mono);
+     font-size: 12px;
+     letter-spacing: 0.06em;
+     color: var(--c-primary);
+     background: var(--c-primary-100);
+     padding: 2px 8px;
+     border-radius: 3px;
+     font-weight: 700;
+     margin-right: 8px;
+     vertical-align: middle;
+   }
+   .faq-section h2 {
+     border-bottom: 2px solid var(--c-primary);
+     padding-bottom: 6px;
+   }
+   
+   /* for comformance page */
+   .dark-blue-card {
+     background-color: var(--c-primary);
+     color: #ffffff !important;
+     margin-bottom: 20px;
+   }
+   .lite-blue-card {
+     background-color: #2b82c9;
+     color: #ffffff !important;
+     margin-bottom: 20px;
+   }
+   p.sd-card-text {
+     color: #fff; 
+   }
+   .h1-rubric {
+     font-family: var(--font-head);
+     font-size: 30pt;
+     font-weight: bold;
+     margin-top: 24px;
+     padding-bottom: 20px !important;
+   }
+   .h2-rubric {
+     font-family: var(--font-head);
+     font-size: 22pt;
+     font-weight: bold;
+     margin-top: 30px;
+     padding-bottom: 20px !important;
+   }
+   .h3-rubric {
+     font-family: var(--font-head);
+     font-size: 16pt;
+     font-weight: bold;
+     margin-top: 24px;
+     padding-bottom: 5px !important;
+   }
+   .nist-note {
+     background-color: var(--c-primary);
+     color: #ffffff !important;
+   }
+   .item-underline {
+     border-bottom: 1px solid var(--c-muted);
+   }
+   .list-heading {
+     font-size: 1rem;
+   }
+
+   /* Conformance criteria page */
+   .criteria-lede {
+     background: var(--c-surface-2);
+     border: 1px solid var(--c-line);
+     border-left: 4px solid var(--c-primary);
+     border-radius: 8px;
+     padding: 18px 22px;
+     margin: 0 0 16px;
+   }
+   .rst-content .criteria-lede p {
+     font-size: 15.5px;
+     line-height: 1.65;
+     margin: 0;
+   }
+   .criteria-note {
+     background: var(--c-primary-50);
+     border: 1px solid var(--c-line);
+     border-left: 4px solid var(--c-primary-300);
+     border-radius: 8px;
+     margin: 0 0 22px;
+     padding: 14px 18px;
+   }
+   .rst-content .criteria-note p {
+     margin: 0 0 6px;
+   }
+   .rst-content .criteria-note p:last-child {
+     margin-bottom: 0;
+   }
+   .rst-content table.criteria-structure-table {
+     margin: 16px 0 28px;
+     table-layout: fixed;
+     width: 100%;
+   }
+   .rst-content table.criteria-structure-table th,
+   .rst-content table.criteria-structure-table td {
+     white-space: normal !important;
+     vertical-align: top;
+   }
+   .rst-content table.criteria-structure-table th:first-child,
+   .rst-content table.criteria-structure-table td:first-child {
+     width: 24%;
+   }
+   .rst-content table.criteria-structure-table td:first-child {
+     background: var(--c-surface-2);
+     color: var(--c-ink);
+     font-weight: 700;
+   }
+   .rst-content table.criteria-structure-table p {
+     color: var(--c-ink-soft);
+     margin: 0;
+   }
+   .rst-content table.criteria-structure-table td:first-child p {
+     color: var(--c-ink);
+   }
+   .criteria-format-grid {
+     margin: 16px 0 28px;
+   }
+   .criteria-format-grid .sd-card.criteria-format-card {
+     background: var(--c-surface);
+     border: 1px solid var(--c-line);
+     border-radius: 8px;
+     box-shadow: none;
+     color: var(--c-ink-soft);
+     height: 100%;
+     padding: 16px 18px;
+   }
+   .criteria-format-grid .sd-card.criteria-format-card .sd-card-header,
+   .criteria-format-grid .sd-card.criteria-format-card .sd-card-body {
+     background: transparent;
+     border: 0;
+     padding: 0;
+   }
+   .criteria-format-grid .sd-card.criteria-format-card p,
+   .criteria-format-grid .sd-card.criteria-format-card p.sd-card-text {
+     color: var(--c-ink-soft);
+   }
+   .criteria-format-grid .sd-card.criteria-format-card strong {
+     color: var(--c-ink);
+   }
+   .criteria-format-grid .sd-card.criteria-format-card {
+     border-top: 4px solid var(--c-primary-300);
+   }
+   .criteria-format-grid .criteria-format-pdf {
+     border-top-color: var(--c-accent) !important;
+   }
+   .criteria-format-grid .criteria-format-oscal {
+     border-top-color: var(--c-ok) !important;
+   }
+   .criteria-format-grid .sd-card.criteria-format-card .sd-card-header p.sd-card-text:last-child {
+     color: var(--c-ink);
+     font-family: var(--font-head);
+     font-size: 16px;
+     margin: 0 0 10px;
+   }
+   .criteria-format-icon {
+     background: var(--c-primary-100);
+     border: 1px solid var(--c-line);
+     border-radius: 6px;
+     color: var(--c-primary);
+     display: inline-block;
+     font-family: var(--font-mono);
+     font-size: 12px;
+     font-weight: 700;
+     letter-spacing: 0.06em;
+     margin: 0 0 12px;
+     padding: 6px 10px;
+   }
+   .criteria-comment-card {
+     background: var(--c-surface-2);
+     border: 1px solid var(--c-line);
+     border-left: 4px solid var(--c-accent);
+     border-radius: 8px;
+     box-shadow: none;
+     margin: 4px 0 0;
+     padding: 14px 18px;
+   }
+   .criteria-comment-card .sd-card-body {
+     padding: 0;
+   }
+   .criteria-comment-card p,
+   .criteria-comment-card p.sd-card-text {
+     color: var(--c-ink-soft);
+     margin: 0;
+   }
+   @media (max-width: 700px) {
+     .criteria-lede,
+     .criteria-note,
+     .criteria-format-grid .sd-card.criteria-format-card,
+     .criteria-comment-card {
+       padding: 14px;
+     }
+   }
+
+   /* Authenticator examples page */
+   .authenticator-table-wrap {
+     margin: 16px 0 28px;
+     overflow-x: auto;
+     -webkit-overflow-scrolling: touch;
+   }
+   .rst-content .authenticator-table-wrap table.authenticator-examples-table {
+     margin: 0;
+     min-width: 860px;
+     table-layout: fixed;
+     width: 100%;
+   }
+   .rst-content .authenticator-table-wrap table.authenticator-examples-table th,
+   .rst-content .authenticator-table-wrap table.authenticator-examples-table td {
+     line-height: 1.4;
+     white-space: normal !important;
+     vertical-align: top;
+   }
+   .rst-content .authenticator-table-wrap table.authenticator-examples-table tbody tr:nth-child(even) td:not(:first-child) {
+     background: var(--c-surface-2);
+   }
+   .rst-content .authenticator-table-wrap table.authenticator-examples-table td:first-child {
+     background: var(--c-primary-50);
+     color: var(--c-ink);
+     font-weight: 700;
+   }
+   .rst-content .authenticator-table-wrap table.authenticator-examples-table td:first-child a {
+     font-weight: 700;
+   }
+   .rst-content .authenticator-table-wrap table.authenticator-examples-table th:nth-child(4),
+   .rst-content .authenticator-table-wrap table.authenticator-examples-table th:nth-child(5),
+   .rst-content .authenticator-table-wrap table.authenticator-examples-table td:nth-child(4),
+   .rst-content .authenticator-table-wrap table.authenticator-examples-table td:nth-child(5) {
+     text-align: center;
+   }
+   .rst-content .authenticator-table-wrap table.authenticator-examples-table ul {
+     margin: 0;
+     padding-left: 15px;
+   }
+   .rst-content .authenticator-table-wrap table.authenticator-examples-table li {
+     line-height: 1.35;
+     margin: 0 0 4px;
+   }
+   .rst-content .authenticator-table-wrap table.authenticator-examples-table li:last-child {
+     margin-bottom: 0;
+   }
+   .auth-status {
+     align-items: center;
+     border: 1px solid var(--c-line);
+     border-radius: 999px;
+     display: inline-flex;
+     font-size: 11.5px;
+     font-weight: 700;
+     gap: 5px;
+     justify-content: center;
+     line-height: 1;
+     min-width: 54px;
+     padding: 5px 9px;
+   }
+   .auth-status::before {
+     border-radius: 999px;
+     display: inline-grid;
+     font-size: 10px;
+     height: 15px;
+     line-height: 1;
+     place-items: center;
+     width: 15px;
+   }
+   .auth-status-yes {
+     background: var(--c-ok-bg);
+     border-color: rgba(47, 125, 50, 0.35);
+     color: var(--c-ok);
+   }
+   .auth-status-yes::before {
+     background: var(--c-ok);
+     color: white;
+     content: "\2713";
+   }
+   .auth-status-no {
+     background: var(--c-line-soft);
+     color: var(--c-muted);
+   }
+   .auth-status-no::before {
+     background: var(--c-muted-2);
+     color: white;
+     content: "-";
+   }
+   @media (max-width: 700px) {
+     .authenticator-table-wrap {
+       margin-bottom: 22px;
+     }
+   }
+
+   /* Subscriber Controlled Wallets page */
+   .scw-lede {
+     background: var(--c-surface-2);
+     border: 1px solid var(--c-line);
+     border-left: 4px solid var(--c-primary);
+     border-radius: 8px;
+     padding: 18px 22px;
+     margin: 0 0 24px;
+   }
+   .rst-content .scw-lede p {
+     font-size: 15.5px;
+     line-height: 1.65;
+     margin-bottom: 12px;
+   }
+   .rst-content .scw-lede p:last-child {
+     margin-bottom: 0;
+   }
+   .rst-content a.scw-tooltip-link {
+     text-decoration-style: dotted;
+     text-underline-offset: 2px;
+   }
+   .scw-flow {
+     background: var(--c-surface-2);
+     border: 1px solid var(--c-line);
+     border-radius: 8px;
+     margin: 16px 0 28px;
+     overflow-x: auto;
+     padding: 18px;
+   }
+   .rst-content img.scw-model-image {
+     display: block;
+     margin: 0 auto;
+     max-width: 100%;
+     width: 100%;
+   }
+   .scw-card-grid {
+     margin: 16px 0 28px;
+   }
+   .scw-card-grid .sd-card.scw-card {
+     background: var(--c-surface);
+     border: 1px solid var(--c-line);
+     border-radius: 8px;
+     box-shadow: none;
+     color: var(--c-ink-soft);
+     display: flex;
+     flex-direction: column;
+     height: 100%;
+     padding: 18px;
+   }
+   .scw-card-grid .sd-card.scw-card .sd-card-header {
+     background: transparent;
+     border: 0;
+     margin: 0;
+     padding: 0;
+   }
+   .scw-card-grid .sd-card.scw-card .sd-card-body {
+     border: 0;
+     padding: 0;
+   }
+   .scw-card-grid .sd-card.scw-card p,
+   .scw-card-grid .sd-card.scw-card li,
+   .scw-card-grid .sd-card.scw-card p.sd-card-text {
+     color: var(--c-ink-soft);
+   }
+   .scw-card-grid .sd-card.scw-card strong {
+     color: var(--c-ink);
+   }
+   .scw-card-grid .sd-card.scw-card ul {
+     margin: 8px 0 0;
+     padding-left: 18px;
+   }
+   .scw-card-grid .sd-card.scw-card li {
+     line-height: 1.45;
+     list-style: square;
+     margin: 0 0 7px;
+   }
+   .rst-content img.scw-card-icon {
+     display: block;
+     height: 96px;
+     margin: 0 auto 14px;
+     object-fit: contain;
+     width: 96px;
+   }
+   .rst-content img.scw-example-image,
+   .rst-content img.scw-use-image {
+     display: block;
+     height: 170px;
+     margin: 0 auto 16px;
+     object-fit: contain;
+     width: 170px;
+   }
+   .scw-feature-card {
+     text-align: left;
+   }
+   .scw-benefit-card {
+     border-top: 4px solid var(--c-primary-300) !important;
+   }
+   .scw-benefit-cx {
+     border-top-color: var(--c-accent) !important;
+   }
+   .scw-benefit-card .sd-card-body > p:first-child,
+   .scw-use-card .sd-card-body > p:first-of-type {
+     font-family: var(--font-head);
+     font-size: 16px;
+     line-height: 1.35;
+     margin-bottom: 10px;
+   }
+   .scw-example-card,
+   .scw-use-card {
+     min-height: 100%;
+   }
+   .scw-inline-note {
+     background: var(--c-warn-bg);
+     border: 1px solid var(--c-line);
+     border-left: 4px solid var(--c-accent);
+     border-radius: 8px;
+     margin: 14px 0 0;
+     padding: 12px 14px;
+   }
+   .rst-content .scw-inline-note p,
+   .rst-content .scw-inline-note strong {
+     color: var(--c-ink);
+   }
+   .rst-content .scw-inline-note p {
+     margin: 0;
+   }
+   .scw-protocol-note {
+     background: var(--c-primary-50);
+     border: 1px solid var(--c-line);
+     border-left: 4px solid var(--c-primary);
+     border-radius: 8px;
+     margin: 0 0 28px;
+     padding: 14px 18px;
+   }
+   .rst-content .scw-protocol-note p {
+     margin: 0;
+   }
+   .scw-resource-card {
+     justify-content: flex-start;
+   }
+   .scw-resource-card a {
+     overflow-wrap: anywhere;
+   }
+   .scw-resources-grid .sd-card.scw-resource-card p:first-child {
+     margin-bottom: 8px;
+   }
+   /* Put the URL on its own line under the bold label. The label is the
+      only inline element ahead of it, so promoting it to a block breaks
+      the line without touching the anchor (which stays inline, so only
+      the URL text is clickable — not the full card width). */
+   .scw-resources-grid .sd-card.scw-resource-card .sd-card-body p > strong:first-child {
+     display: block;
+     margin-bottom: 4px;
+   }
+
+   /* Disclaimer below Community Resources on SCW and Authenticator pages. */
+   .community-resources-disclaimer {
+     background: var(--c-surface-2);
+     border: 1px solid var(--c-line);
+     border-top: 3px solid var(--c-muted-2);
+     border-radius: 4px;
+     margin: 0 0 28px;
+     padding: 16px 20px;
+   }
+   .rst-content .community-resources-disclaimer p {
+     margin-bottom: 10px;
+   }
+   .rst-content .community-resources-disclaimer p:first-child {
+     color: var(--c-muted);
+     font-size: 12px;
+     letter-spacing: 0.06em;
+     text-transform: uppercase;
+   }
+   .rst-content .community-resources-disclaimer p:last-child {
+     margin-bottom: 0;
+   }
+
+   /* theme.css renders the external-link glyph as an inline ::after with
+      vertical-align: super and 0.12em side margins. Because it is an
+      inline box inside the anchor, the anchor's underline paints beneath
+      the glyph and those margins, which reads as a stray underscore
+      trailing the icon. text-decoration: none on the pseudo-element does
+      not help — a descendant cannot cancel an ancestor's underline.
+      inline-block makes it an atomic inline box, which the underline
+      skips. */
+   .rst-content.style-external-links a.reference.external::after {
+     display: inline-block;
+   }
+   @media (max-width: 700px) {
+     .scw-lede,
+     .scw-flow,
+     .scw-card-grid .sd-card.scw-card {
+       padding: 14px;
+     }
+     .rst-content img.scw-example-image,
+     .rst-content img.scw-use-image {
+       height: 140px;
+       width: 140px;
+     }
+   }
+
+   /* =========================================================
+      Full-bleed sticky NIST footer
+      nist-footer is moved out of .wy-grid-for-nav in layout.html so it
+      is a direct child of <body>. Two separate strategies:
+
+      Desktop (≥769px): flex body so the footer is pushed to the bottom.
+        - .wy-grid-for-nav is position: absolute  →  must be in-flow
+        - .nist-footer has max-width: 1000px      →  must span full width
+
+      Mobile (≤768px): no flex on body (RTD theme scroll breaks), instead
+      just put the grid in normal flow with a min-height so the footer
+      flows below it naturally.
+      ========================================================= */
+
+   /* ── Desktop ──────────────────────────────────────────────── */
+   @media screen and (min-width: 769px) {
+     body.wy-body-for-nav {
+       min-height: 100vh;
+       display: flex;
+       flex-direction: column;
+     }
+     body.wy-body-for-nav > .wy-grid-for-nav {
+       position: relative !important;   /* override theme's absolute */
+       height: auto !important;         /* override theme's 100% */
+       flex: 1 0 auto;
+     }
+     body.wy-body-for-nav > .nist-footer {
+       flex-shrink: 0;
+       max-width: none !important;      /* override theme's 1000px */
+       width: 100%;
+       position: relative;
+       z-index: 201;                    /* above sidebar (z-index 200) */
+     }
+   }
+
+   /* ── Mobile ───────────────────────────────────────────────── */
+   @media screen and (max-width: 768px) {
+     body.wy-body-for-nav > .wy-grid-for-nav {
+       position: relative !important;   /* put grid in-flow so footer follows */
+       height: auto !important;
+       min-height: calc(100vh - 45px);  /* 45px = fixed NIST header height */
+     }
+     body.wy-body-for-nav > .nist-footer {
+       max-width: none !important;
+       width: 100%;
+       position: relative;
+     }
+   }
+
+   /* ── "Coming soon" placeholder page ───────────────────────── */
+   .coming-soon {
+     background: var(--c-surface-2);
+     border: 1px solid var(--c-line);
+     border-radius: 10px;
+     padding: 48px 32px;
+     margin: 8px 0 24px;
+     text-align: center;
+   }
+   .rst-content .coming-soon .coming-soon-badge {
+     display: inline-block;
+     font-family: var(--font-body);
+     font-size: 12px;
+     font-weight: 700;
+     letter-spacing: 0.08em;
+     text-transform: uppercase;
+     color: var(--c-warn);
+     background: var(--c-warn-bg);
+     border-radius: 999px;
+     padding: 5px 14px;
+     margin: 0 0 18px;
+   }
+   .rst-content .coming-soon .coming-soon-title {
+     font-family: var(--font-head);
+     font-size: 26px;
+     font-weight: 700;
+     line-height: 1.25;
+     color: var(--c-ink);
+     margin: 0 0 14px;
+   }
+   .rst-content .coming-soon .coming-soon-body {
+     font-size: 15.5px;
+     line-height: 1.65;
+     color: var(--c-ink-soft);
+     max-width: 62ch;
+     margin: 0 auto 12px;
+   }
+   .rst-content .coming-soon .coming-soon-body:last-child {
+     margin-bottom: 0;
+   }
+
+   @media screen and (max-width: 768px) {
+     .coming-soon {
+       padding: 32px 20px;
+     }
+     .rst-content .coming-soon .coming-soon-title {
+       font-size: 22px;
+     }
+   }

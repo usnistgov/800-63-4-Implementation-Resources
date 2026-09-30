@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-labelledby="title desc">
+  <title id="title">Verifiable</title>
+  <desc id="desc">A signed credential protected by a shield</desc>
+  <rect x="8" y="8" width="184" height="184" rx="25" fill="#f1f6fd" stroke="#d4dde8" stroke-width="2"/>
+  <g fill="none" stroke="#16447f" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M100 37 145 55v38c0 32-18 52-45 68-27-16-45-36-45-68V55z" fill="#fff"/>
+      <path d="m78 99 15 15 29-32" stroke="#c07f1a" stroke-width="7"/>
+      <path d="M79 62h42" stroke="#5b8bc9"/>
+    
+  </g>
+</svg>
